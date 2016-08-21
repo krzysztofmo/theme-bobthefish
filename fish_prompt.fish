@@ -117,7 +117,13 @@ end
 
 function __bobthefish_pretty_git_project_dir -S -a project_dir -d 'Print project git directory, shortened to fit the prompt'
   set -l pretty_dir (echo -n (dirname $project_dir) | sed -e 's#\(/\{0,1\}\.\{0,1\}[^/]\)\([^/]*\)#\1#g')
-  echo -ns $pretty_dir '/' (basename $project_dir)
+  switch "$pretty_dir"
+    case '.'
+      basename $project_dir
+    case '*'
+      echo -ns $pretty_dir '/' (basename $project_dir)
+  end
+
 end
 
 function __bobthefish_git_project_dir -S -d 'Print the current git project base directory'
